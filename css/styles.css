@@ -1,0 +1,1384 @@
+/* =========================================================
+   Staarbridge — styles.css
+   All styles for every page live in this one file.
+   Colors and fonts are set once below; change them here and
+   every page updates.
+   ========================================================= */
+
+/* ---------- Fonts (stored in /fonts, nothing loads from other sites) ---------- */
+
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 500 700;
+  font-display: swap;
+  src: url("../fonts/fraunces.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("../fonts/jakarta.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: italic;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("../fonts/jakarta-italic.woff2") format("woff2");
+}
+
+:root {
+  /* Brand colors (from the logo) */
+  --navy: #1f2c4d;              /* headings, primary buttons, footer */
+  --navy-light: #2c3d66;        /* primary button hover */
+  --gold: #e8a94c;              /* the logo star: Donate, small accents */
+  --gold-dark: #d4922f;         /* Donate hover */
+  --gold-soft: #fbf1df;         /* gentle gold backgrounds */
+
+  /* Text */
+  --color-heading: var(--navy);
+  --color-text: #2e3a52;
+  --color-muted: #5d6880;
+  --color-accent: #2f65a8;      /* links */
+  --color-accent-dark: #234d82; /* link hover */
+
+  /* Backgrounds */
+  --color-bg: #faf8f4;          /* warm off-white page background */
+  --color-surface: #ffffff;     /* cards */
+  --color-tint: #f1f4f9;        /* soft blue-grey panels */
+  --color-line: #e6e1d7;        /* borders */
+  --color-on-dark: #ffffff;
+
+  /* One calm color per topic */
+  --finance: #3e8e7e;           /* sage green */
+  --finance-soft: #e5f2ee;
+  --law: #4a63a8;               /* muted blue */
+  --law-soft: #e9edf8;
+
+  /* Fonts */
+  --font-heading: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Plus Jakarta Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+
+  /* Spacing, shape and motion */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4.5rem;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --max-width: 1100px;
+  --shadow-sm: 0 1px 3px rgba(31, 44, 77, 0.06), 0 4px 14px rgba(31, 44, 77, 0.05);
+  --shadow-md: 0 10px 30px rgba(31, 44, 77, 0.12);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ---------- Base ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+main {
+  flex: 1;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 var(--space-sm);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--color-heading);
+}
+
+h1 {
+  font-size: clamp(2.2rem, 6.5vw, 3.3rem);
+}
+
+h2 {
+  font-size: clamp(1.7rem, 4.5vw, 2.25rem);
+}
+
+h3 {
+  font-size: 1.4rem;
+}
+
+p {
+  margin: 0 0 var(--space-sm);
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.2s var(--ease);
+}
+
+a:hover {
+  color: var(--color-accent-dark);
+}
+
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--gold-soft);
+  color: var(--navy);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-sm);
+}
+
+.skip-link {
+  position: absolute;
+  top: var(--space-xs);
+  left: -9999px;
+  z-index: 100;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  background: var(--navy);
+  color: var(--color-on-dark);
+}
+
+.skip-link:focus {
+  left: var(--space-xs);
+}
+
+/* ---------- Animations (subtle, and only once) ---------- */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* Content fades up slightly as it scrolls into view (in browsers that support it) */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .card-grid > *,
+    .lesson-list > li,
+    .split > *,
+    .contact-card,
+    .callout,
+    .table-wrap,
+    .flow,
+    .donate-grid,
+    .cta .container,
+    .lesson-pager > * {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 30%;
+    }
+  }
+}
+
+/* Anyone who asks their device for less motion gets none */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Header and navigation ---------- */
+
+.site-header {
+  position: relative;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid var(--color-line);
+}
+
+@supports (backdrop-filter: blur(10px)) {
+  .site-header {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(12px);
+  }
+}
+
+.header-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  padding-top: 0.75rem;
+  padding-bottom: 0.6rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--navy);
+  text-decoration: none;
+}
+
+.brand:hover {
+  color: var(--navy);
+}
+
+/* The star-and-bridge logo mark in the header */
+.brand-logo {
+  flex-shrink: 0;
+  width: auto;
+  height: 46px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.brand-name {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.brand-tagline {
+  margin-top: 0.3rem;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* On phones the tagline splits evenly over two lines */
+@media (max-width: 479px) {
+  .brand-tagline {
+    max-width: 14rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.05em;
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+}
+
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav a {
+  position: relative;
+  display: block;
+  padding: 0.45rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-text);
+  text-decoration: none;
+  transition: color 0.2s var(--ease), background-color 0.2s var(--ease);
+}
+
+/* Thin gold line that grows under the link on hover / current page */
+.site-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0.2rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform 0.25s var(--ease);
+}
+
+.site-nav a:hover {
+  color: var(--navy);
+}
+
+.site-nav a:hover::after,
+.site-nav a[aria-current]::after {
+  transform: scaleX(1);
+}
+
+.site-nav a[aria-current] {
+  color: var(--navy);
+}
+
+/* Donate always stands out */
+.site-nav a[href="donate.html"] {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  background: var(--gold);
+  color: var(--navy);
+}
+
+.site-nav a[href="donate.html"]::after {
+  display: none;
+}
+
+.site-nav a[href="donate.html"]:hover {
+  background: var(--gold-dark);
+}
+
+@media (min-width: 768px) {
+  .site-header {
+    position: sticky;
+    top: 0;
+  }
+
+  .header-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+  }
+
+  .site-nav ul {
+    gap: 0.4rem;
+  }
+
+  .site-nav a {
+    padding: 0.5rem 0.85rem;
+    font-size: 0.98rem;
+  }
+
+  .site-nav a::after {
+    left: 0.85rem;
+    right: 0.85rem;
+  }
+
+  .site-nav a[href="donate.html"] {
+    margin-left: 0.5rem;
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+  }
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  display: inline-block;
+  padding: 0.85rem 1.75rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background-color 0.2s var(--ease);
+}
+
+.btn-primary {
+  background: var(--navy);
+  color: var(--color-on-dark);
+  box-shadow: 0 4px 14px rgba(31, 44, 77, 0.2);
+}
+
+.btn-primary:hover {
+  background: var(--navy-light);
+  color: var(--color-on-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(31, 44, 77, 0.25);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ---------- Home page hero ---------- */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: clamp(24rem, 62vh, 36rem);
+  padding: var(--space-xl) 0;
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-line);
+  background:
+    radial-gradient(ellipse 60% 70% at 15% 10%, var(--law-soft), transparent),
+    radial-gradient(ellipse 50% 60% at 90% 90%, var(--gold-soft), transparent),
+    var(--color-bg);
+  text-align: center;
+}
+
+/* Faint dot pattern for texture */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(rgba(31, 44, 77, 0.09) 1px, transparent 1.5px);
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 50%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 80% at 50% 50%, #000 30%, transparent 75%);
+}
+
+/* Large, faint logo mark in the background */
+.hero::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: -60px;
+  bottom: -50px;
+  width: 340px;
+  height: 280px;
+  background: url("../images/logo-mark.png") no-repeat center / contain;
+  opacity: 0.06;
+}
+
+@media (min-width: 768px) {
+  .hero::after {
+    right: -40px;
+    bottom: -60px;
+    width: 560px;
+    height: 460px;
+  }
+}
+
+.hero h1 {
+  margin-bottom: var(--space-sm);
+  font-size: clamp(3rem, 12vw, 5.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Short gold rule under the title */
+.hero h1::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 3px;
+  margin: 1.1rem auto 0;
+  border-radius: 2px;
+  background: var(--gold);
+}
+
+.hero-tagline {
+  margin-bottom: var(--space-lg);
+  font-size: clamp(1.1rem, 3vw, 1.3rem);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero h1,
+  .hero-tagline,
+  .hero .btn {
+    animation: rise 0.8s var(--ease) both;
+  }
+
+  .hero-tagline {
+    animation-delay: 0.12s;
+  }
+
+  .hero .btn {
+    animation-delay: 0.24s;
+  }
+}
+
+/* ---------- Sections ---------- */
+
+.section {
+  padding: var(--space-xl) 0;
+}
+
+.section-tight {
+  padding-top: 0;
+}
+
+/* The first section on About and Donate gets a soft backdrop */
+main > .section:first-child {
+  background:
+    radial-gradient(ellipse 50% 60% at 95% 0%, var(--law-soft), transparent),
+    var(--color-bg);
+}
+
+/* Soft band at the top of most pages */
+.page-header {
+  position: relative;
+  isolation: isolate;
+  margin-bottom: var(--space-lg);
+  padding: var(--space-lg) 0;
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-line);
+  background:
+    radial-gradient(ellipse 55% 90% at 100% 0%, var(--gold-soft), transparent),
+    linear-gradient(180deg, var(--color-tint), var(--color-bg));
+}
+
+.page-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(rgba(31, 44, 77, 0.08) 1px, transparent 1.5px);
+  background-size: 22px 22px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 40%, #000);
+  mask-image: linear-gradient(90deg, transparent 40%, #000);
+}
+
+@media (min-width: 768px) {
+  .page-header {
+    padding: var(--space-xl) 0 var(--space-lg);
+  }
+}
+
+/* Short gold rule under page titles */
+.page-header h1::after,
+main > .section:first-child h1::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 3px;
+  margin-top: 0.9rem;
+  border-radius: 2px;
+  background: var(--gold);
+}
+
+.lead {
+  max-width: 42rem;
+  font-size: 1.15rem;
+  color: var(--color-text);
+}
+
+.lead-large {
+  font-size: clamp(1.25rem, 3vw, 1.55rem);
+  line-height: 1.55;
+  color: var(--navy);
+}
+
+.eyebrow {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Donate call-to-action on the home page: a navy panel */
+.section-alt {
+  padding-top: 0;
+}
+
+.cta {
+  text-align: center;
+}
+
+.cta .container {
+  position: relative;
+  overflow: hidden;
+  max-width: calc(var(--max-width) - 2 * var(--space-sm));
+  padding: var(--space-xl) var(--space-md);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(ellipse 60% 80% at 100% 0%, rgba(232, 169, 76, 0.18), transparent),
+    var(--navy);
+  color: #dfe5f0;
+}
+
+@media (max-width: 1131px) {
+  .cta .container {
+    width: calc(100% - 2 * var(--space-sm));
+  }
+}
+
+.cta h2 {
+  color: var(--color-on-dark);
+}
+
+.cta p {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: var(--space-md);
+  max-width: 34rem;
+  font-size: 1.1rem;
+}
+
+/* On navy, the main button turns gold */
+.cta .btn-primary {
+  background: var(--gold);
+  color: var(--navy);
+  box-shadow: none;
+}
+
+.cta .btn-primary:hover {
+  background: var(--gold-dark);
+  color: var(--navy);
+}
+
+/* Two columns on wider screens, stacked on phones */
+.split {
+  display: grid;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+.split-top {
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .split {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+  }
+
+  /* Puts the image on the left on wider screens (it comes after the text on phones) */
+  .split-reverse > .media {
+    order: -1;
+  }
+}
+
+/* ---------- Images and image placeholders ---------- */
+
+.media {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--color-tint);
+}
+
+.media-portrait {
+  aspect-ratio: 4 / 5;
+}
+
+.media-wide {
+  aspect-ratio: 16 / 9;
+}
+
+.media > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease);
+}
+
+/* Big photos on About / Donate get a soft gold accent block behind them */
+.split > .media {
+  box-shadow: 14px 14px 0 var(--gold-soft), var(--shadow-md);
+}
+
+/* Empty box shown until the real image is added */
+.image-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: 1px dashed #c8cfdc;
+  border-radius: inherit;
+  background: var(--color-tint);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* ---------- Topic cards (Finance / Law) ---------- */
+
+.card-grid {
+  display: grid;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+@media (min-width: 640px) {
+  .card-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+  }
+}
+
+.topic-card {
+  --topic: var(--finance);
+  --topic-soft: var(--finance-soft);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+
+.topic-card[href="law.html"] {
+  --topic: var(--law);
+  --topic-soft: var(--law-soft);
+}
+
+.topic-card:hover {
+  color: var(--color-text);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.topic-card:hover .media > img {
+  transform: scale(1.03);
+}
+
+.topic-card .media {
+  border-radius: 0;
+}
+
+.topic-card .image-slot {
+  border: 0;
+}
+
+.topic-card-body {
+  flex: 1;
+  padding: var(--space-md) var(--space-md) var(--space-lg);
+  border-top: 3px solid var(--topic);
+}
+
+.topic-card h2,
+.topic-card h3 {
+  margin-bottom: 0.4rem;
+  font-size: 1.7rem;
+}
+
+.card-meta {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  padding: 0.1rem 0.65rem;
+  border-radius: 999px;
+  background: var(--topic-soft);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--topic);
+}
+
+.topic-card-link {
+  display: inline-block;
+  font-weight: 700;
+  color: var(--color-accent);
+  transition: transform 0.25s var(--ease);
+}
+
+.topic-card:hover .topic-card-link {
+  transform: translateX(4px);
+}
+
+/* ---------- Lessons (Finance and Law pages) ---------- */
+
+.breadcrumb {
+  margin-bottom: var(--space-sm);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.breadcrumb a {
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* Small "Day 1" / "Lesson 1" label */
+.lesson-number {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--finance);
+}
+
+/* Law pages use the law color */
+.page-header:has(.breadcrumb a[href="law.html"]) .lesson-number,
+.lesson-card[href^="law-"] .lesson-number {
+  color: var(--law);
+}
+
+/* List of lessons on finance.html and law.html */
+.lesson-list {
+  display: grid;
+  gap: var(--space-sm);
+  margin: var(--space-md) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lesson-card {
+  --topic: var(--finance);
+  --topic-soft: var(--finance-soft);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-sm);
+  align-items: center;
+  padding: var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-left: 4px solid var(--topic);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+.lesson-card[href^="law-"] {
+  --topic: var(--law);
+  --topic-soft: var(--law-soft);
+}
+
+.lesson-card:hover {
+  color: var(--color-text);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.lesson-card .lesson-number {
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.lesson-card-title {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--navy);
+}
+
+.lesson-card-summary {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--color-muted);
+}
+
+.lesson-card-arrow {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--topic-soft);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--topic);
+  transition: transform 0.25s var(--ease), background-color 0.25s var(--ease), color 0.25s var(--ease);
+}
+
+.lesson-card:hover .lesson-card-arrow {
+  background: var(--topic);
+  color: var(--color-on-dark);
+  transform: translateX(3px);
+}
+
+.section-next {
+  margin-top: var(--space-lg);
+  font-weight: 700;
+}
+
+/* ---------- Lesson pages ---------- */
+
+/* Narrower column so long lessons are comfortable to read */
+.container-narrow {
+  max-width: calc(46rem + 2 * var(--space-sm));
+}
+
+.lesson-content {
+  padding-bottom: var(--space-lg);
+  font-size: 1.06rem;
+}
+
+.lesson-content h2 {
+  margin-top: var(--space-xl);
+  font-size: clamp(1.5rem, 4vw, 1.85rem);
+}
+
+.lesson-content > h2:first-child {
+  margin-top: 0;
+}
+
+.lesson-content h3 {
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.lesson-content ul,
+.lesson-content ol {
+  margin: 0 0 var(--space-md);
+  padding-left: 1.4rem;
+}
+
+.lesson-content li {
+  margin-bottom: 0.5rem;
+  padding-left: 0.2rem;
+}
+
+.lesson-content ul > li::marker {
+  color: var(--gold);
+}
+
+.lesson-content ol > li::marker {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.lesson-content li > ul,
+.lesson-content li > ol {
+  margin-top: 0.5rem;
+}
+
+.lesson-content strong {
+  font-weight: 700;
+  color: var(--navy);
+}
+
+/* Tables scroll sideways inside their box on small phones */
+.table-wrap {
+  margin: var(--space-lg) 0;
+  overflow-x: auto;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.table-wrap table {
+  width: 100%;
+  min-width: 20rem;
+  border-collapse: collapse;
+  font-size: 0.94rem;
+}
+
+.table-wrap caption {
+  padding: var(--space-sm) var(--space-sm) 0.6rem;
+  font-weight: 700;
+  text-align: left;
+  color: var(--navy);
+}
+
+.table-wrap th,
+.table-wrap td {
+  padding: 0.75rem var(--space-sm);
+  border-bottom: 1px solid var(--color-line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.table-wrap thead th,
+.table-wrap thead td {
+  background: var(--color-tint);
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.lesson-content .table-wrap thead strong {
+  color: inherit;
+}
+
+.table-wrap tbody th {
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.table-wrap tbody tr:last-child th,
+.table-wrap tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+@media (max-width: 479px) {
+  .table-wrap table {
+    font-size: 0.85rem;
+  }
+
+  .table-wrap th,
+  .table-wrap td {
+    padding: 0.6rem 0.5rem;
+  }
+}
+
+/* Step-by-step flow (boxes joined by arrows) */
+.lesson-content .flow {
+  display: grid;
+  gap: 1.9rem;
+  max-width: 26rem;
+  margin: var(--space-lg) auto;
+  padding: 0;
+  list-style: none;
+}
+
+.lesson-content .flow > li {
+  position: relative;
+  margin: 0;
+  padding: 0.9rem var(--space-sm);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  color: var(--color-muted);
+}
+
+.lesson-content .flow > li:first-child,
+.lesson-content .flow > li:last-child {
+  background: var(--gold-soft);
+  border-color: #f0dcb8;
+}
+
+.flow li strong {
+  display: block;
+  font-size: 1.05rem;
+}
+
+.flow li + li::before {
+  content: "\2193";
+  position: absolute;
+  top: -1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+}
+
+/* Boxed sections such as "Get Started This Week" */
+.callout {
+  margin: var(--space-xl) 0 var(--space-lg);
+  padding: var(--space-md);
+  background: var(--color-tint);
+  border-left: 4px solid var(--navy);
+  border-radius: var(--radius);
+}
+
+.lesson-content .callout h2 {
+  margin-top: 0;
+  font-size: 1.4rem;
+}
+
+.callout > :last-child {
+  margin-bottom: 0;
+}
+
+.note {
+  padding: 0.85rem var(--space-sm);
+  background: var(--gold-soft);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--radius-sm);
+}
+
+.lesson-closing {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-line);
+  color: var(--color-muted);
+}
+
+.lesson-closing-title {
+  margin-bottom: 0.4rem;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.lesson-closing > :last-child {
+  margin-bottom: 0;
+}
+
+.disclaimer {
+  margin-top: var(--space-lg);
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+/* Previous / next lesson links */
+.lesson-pager {
+  display: grid;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-xl);
+}
+
+@media (min-width: 640px) {
+  .lesson-pager {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pager-next {
+    grid-column: 2;
+    text-align: right;
+  }
+}
+
+.pager-link {
+  display: block;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  font-family: var(--font-heading);
+  font-size: 1.08rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--navy);
+  text-decoration: none;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.pager-link:hover {
+  color: var(--navy);
+  border-color: #cdd5e3;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.pager-link span {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* ---------- Contact page ---------- */
+
+.contact-card {
+  padding: var(--space-lg) var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-top: 4px solid var(--gold);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
+
+.contact-list {
+  margin: 0 0 var(--space-md);
+  padding: 0;
+  list-style: none;
+}
+
+.contact-list li {
+  margin-bottom: var(--space-sm);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.contact-label {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.contact-list a {
+  font-size: 1.12rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Donate page ---------- */
+
+.donate-heading {
+  margin-top: var(--space-lg);
+  font-size: 1.45rem;
+}
+
+.donate-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: var(--space-md);
+}
+
+@media (min-width: 480px) {
+  .donate-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.donate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 0.75rem 1rem;
+  background: var(--color-surface);
+  border: 1px solid #cdd5e3;
+  border-radius: var(--radius-sm);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  text-decoration: none;
+  transition: transform 0.2s var(--ease), background-color 0.2s var(--ease), border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.donate-btn:hover {
+  color: var(--navy);
+  background: var(--gold-soft);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.donate-btn:active {
+  transform: translateY(0);
+}
+
+.donate-btn-custom {
+  grid-column: 1 / -1;
+  font-size: 1rem;
+}
+
+/* Shown instead of the donation buttons until online donations open */
+.coming-soon {
+  margin-top: var(--space-lg);
+  padding: var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-top: 4px solid var(--gold);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.coming-soon-label {
+  margin-bottom: 0.4rem;
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--navy);
+}
+
+.coming-soon > :last-child {
+  margin-bottom: 0;
+}
+
+.fine-print {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  margin-top: var(--space-xl);
+  padding: var(--space-xl) 0 var(--space-lg);
+  background: var(--navy);
+  color: #dfe5f0;
+}
+
+.footer-inner {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.site-footer p {
+  margin: 0 0 0.35rem;
+}
+
+.site-footer a {
+  color: #dfe5f0;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.site-footer a:hover {
+  color: var(--gold);
+  text-decoration: underline;
+}
+
+.footer-name {
+  font-family: var(--font-heading);
+  font-size: 1.9rem;
+  font-weight: 600;
+  color: var(--color-on-dark);
+}
+
+.footer-motto {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--gold);
+}
+
+.footer-copy {
+  font-size: 0.85rem;
+  color: #aeb9cf;
+}
+
+@media (min-width: 768px) {
+  .footer-inner {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+
+  .footer-side {
+    text-align: right;
+  }
+}

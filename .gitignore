@@ -1,0 +1,23 @@
+# Working files (video frames, tools, screenshots) - not part of the site
+_temp/
+
+# Videos are never committed (see rules.md). Upload to YouTube or Vimeo instead.
+*.mp4
+*.mov
+*.m4v
+*.avi
+
+# Secrets must never be committed (see rules.md)
+.env
+.env.*
+*.key
+*.pem
+
+# Computer and editor clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*~
